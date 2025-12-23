@@ -1,0 +1,17 @@
+*.bak
+*.un~
+*.*~
+*.scvd
+*.old
+*.uvoptx
+/**/build_*/
+/**/build/
+/**/*.pyc
+.sconsign.dblite
+.DS_Store
+.idea
+Kconfig.tmp
+.venv
+.DS_Store
+.cache
+app/watch/project/build_sf32lb52-watch_hcpu
