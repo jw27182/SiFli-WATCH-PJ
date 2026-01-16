@@ -154,12 +154,12 @@ int gps_hal_start(GpsCallbacks *callbacks)
         //rt_err_t err = rt_device_open(gps_uart, RT_DEVICE_FLAG_RDWR);
         LOG_D("Open gps uart %d\n", err);
         //config.baud_rate = 4800;
-        config.baud_rate = 9600;
+        // config.baud_rate = 9600;
         //config.baud_rate = 14400;
         //config.baud_rate = 19200;
         //config.baud_rate = 38400;
         //config.baud_rate = 57600;
-        //config.baud_rate = 115200;
+        config.baud_rate = 115200;
         //config.baud_rate = 1000000;
         err = rt_device_control(gps_uart, RT_DEVICE_CTRL_CONFIG, &config);
 

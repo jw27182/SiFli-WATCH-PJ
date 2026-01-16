@@ -447,3 +447,53 @@ __exit:
         rt_free(sensor_step);
     return -RT_ERROR;
 }
+
+static int lsm6dsl_init(void)
+{
+    struct rt_sensor_config cfg;
+    cfg.intf.dev_name = "i2c3";
+    cfg.intf.user_data = (void *)LSM6DSL_ADDR_DEFAULT;
+    cfg.irq_pin.pin = RT_PIN_NONE;
+    return rt_hw_lsm6dsl_init("lsm6dsl", &cfg);
+}
+
+INIT_DEVICE_EXPORT(lsm6dsl_init);
+
+static void lsm6dsl_test(int argc, char **argv) {
+    rt_device_t acce_sensor_dev = rt_device_find("acce_lsm6dsl");
+    rt_device_t gyro_sensor_dev = rt_device_find("gyro_lsm6dsl");
+    rt_device_t step_sensor_dev = rt_device_find("step_lsm6dsl");
+    if (acce_sensor_dev == RT_NULL || gyro_sensor_dev == RT_NULL ||
+        step_sensor_dev == RT_NULL) {
+        rt_kprintf("find lsm6dsl sensor device failed!\n");
+        return;
+    } else {
+        rt_err_t ret = rt_device_open(acce_sensor_dev, RT_DEVICE_FLAG_RDONLY);
+        if (ret != RT_EOK)
+            rt_kprintf("open acce_sensor_dev failed! err: %d\n", ret);
+        ret = rt_device_open(gyro_sensor_dev, RT_DEVICE_FLAG_RDONLY);
+        if (ret != RT_EOK)
+            rt_kprintf("open gyro_sensor_dev failed! err: %d\n", ret);
+        ret = rt_device_open(step_sensor_dev, RT_DEVICE_FLAG_RDONLY);
+        if (ret != RT_EOK)
+            rt_kprintf("open step_sensor_dev failed! err: %d\n", ret);
+        struct rt_sensor_data sensor_data;
+        for (int i = 0; i <= atoi(argv[1]); i++) {
+            rt_device_read(acce_sensor_dev, 0, &sensor_data, 1);
+            rt_kprintf("acce value: %d\t\t%d\t\t%d\t\t", sensor_data.data.acce.x,
+                       sensor_data.data.acce.y, sensor_data.data.acce.z);
+            rt_device_read(gyro_sensor_dev, 0, &sensor_data, 1);
+            rt_kprintf("gyro value: %d\t\t%d\t\t%d\t\t", sensor_data.data.gyro.x,
+                       sensor_data.data.gyro.y, sensor_data.data.gyro.z);
+            rt_device_read(step_sensor_dev, 0, &sensor_data, 1);
+            rt_kprintf("step value: %d [%d/%d]\n", sensor_data.data.step, i,
+                       atoi(argv[1]));
+            rt_thread_mdelay(100);
+        }
+        rt_device_close(acce_sensor_dev);
+        rt_device_close(gyro_sensor_dev);
+        rt_device_close(step_sensor_dev);
+    }
+}
+
+MSH_CMD_EXPORT(lsm6dsl_test, test LSM6DSL sensor);

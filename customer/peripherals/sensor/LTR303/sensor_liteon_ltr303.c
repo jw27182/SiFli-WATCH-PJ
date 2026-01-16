@@ -163,3 +163,28 @@ int rt_hw_ltr303_init(const char *name, struct rt_sensor_config *cfg)
 
 #endif // RT_USING_SENSOR
 /************************ (C) COPYRIGHT Sifli Technology *******END OF FILE****/
+static void ltr303_test(int argc, char **argv) {
+    struct rt_sensor_config cfg = {
+        .intf.dev_name = "i2c3",
+    };
+    rt_hw_ltr303_init("ltr303", &cfg);
+    rt_device_t sensor_dev = rt_device_find("li_ltr303");
+    if (sensor_dev == RT_NULL) {
+        rt_kprintf("find ltr303 sensor device failed!\n");
+        return;
+    } else {
+        rt_err_t ret = rt_device_open(sensor_dev, RT_DEVICE_FLAG_RDONLY);
+        if (ret != RT_EOK) rt_kprintf("open device failed! err: %d\n", ret);
+        rt_device_control(sensor_dev, RT_SENSOR_CTRL_SET_POWER,
+                          (void *)RT_SENSOR_POWER_NORMAL);
+        struct rt_sensor_data sensor_data;
+        for (int i = 0; i <= atoi(argv[1]); i++) {
+            rt_device_read(sensor_dev, 0, &sensor_data, 1);
+            rt_kprintf("light value: %d [%d/%d]\n", sensor_data.data.light, i,
+                       atoi(argv[1]));
+        }
+        rt_device_close(sensor_dev);
+    }
+}
+
+MSH_CMD_EXPORT(ltr303_test, test LTR303 sensor);

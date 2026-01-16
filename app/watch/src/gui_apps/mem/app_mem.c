@@ -26,7 +26,7 @@ enum
 
 #ifdef RT_USING_FINSH
 #include <finsh.h>
-static uint8_t mem_log = 0;
+static uint8_t mem_log = 1;
 int app_mem_log(void)
 {
     mem_log = (mem_log + 1) & 0x01;

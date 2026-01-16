@@ -239,6 +239,21 @@ menuconfig SENSOR_USING_BAROMETER
             endif
     endif    
 
+menuconfig SENSOR_USING_HUMITURE
+    bool "Humiture Sensor"
+    default n
+    if SENSOR_USING_HUMITURE
+        menuconfig SENSOR_USING_AHT20
+            bool "aht20"
+            select RT_USING_SENSOR
+            default n
+            if SENSOR_USING_AHT20
+                config AHT20_I2C_BUS
+                string "Sensor AHT20 I2C"
+                default "i2c3"    
+            endif
+    endif    
+
 menuconfig SENSOR_USING_ASL
     bool "ASL Sensor"
     default n

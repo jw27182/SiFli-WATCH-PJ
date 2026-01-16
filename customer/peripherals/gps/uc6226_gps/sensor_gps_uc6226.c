@@ -275,3 +275,123 @@ __exit:
 
 #endif // RT_USING_SENSOR
 /************************ (C) COPYRIGHT Sifli Technology *******END OF FILE****/
+
+#define UART2_DEVICE_NAME    "uart2"    // 数据来源串口
+#define UART1_DEVICE_NAME    "uart1"    // 数据目标串口
+
+static rt_device_t uart2_dev;          // UART2设备句柄
+static rt_device_t uart1_dev;          // UART1设备句柄
+static struct rt_semaphore rx_sem;     // 用于通知数据到达的信号量
+static char uart_rx_buffer[64];        // 数据接收缓冲区
+
+/* UART2接收回调函数 - 中断服务例程中调用 */
+static rt_err_t uart2_rx_ind(rt_device_t dev, rt_size_t size)
+{
+    /* 接收到数据后发送信号量，唤醒转发线程 */
+    rt_sem_release(&rx_sem);
+    return RT_EOK;
+}
+
+/* 数据转发线程入口函数 */
+static void uart_forward_thread_entry(void *parameter)
+{
+    rt_size_t rx_size;
+    
+    while (1)
+    {
+        /* 等待接收信号量，有数据时继续执行 */
+        if (rt_sem_take(&rx_sem, RT_WAITING_FOREVER) == RT_EOK)
+        {
+            /* 从UART2读取数据 */
+            rx_size = rt_device_read(uart2_dev, 0, uart_rx_buffer, sizeof(uart_rx_buffer));
+            
+            if (rx_size > 0)
+            {
+                /* 将数据写入UART1发送出去 */
+                rt_device_write(uart1_dev, 0, uart_rx_buffer, rx_size);
+            }
+        }
+    }
+}
+
+/* 初始化函数 - 导出为MSH命令 */
+int uart_forward_init(void)
+{
+    rt_err_t result = RT_EOK;
+    rt_thread_t thread;
+    
+    /* 查找UART2设备 */
+    uart2_dev = rt_device_find(UART2_DEVICE_NAME);
+    if (uart2_dev == RT_NULL)
+    {
+        rt_kprintf("Error: Cannot find UART2 device!\n");
+        return -RT_ERROR;
+    }
+    
+    /* 查找UART1设备 */
+    uart1_dev = rt_device_find(UART1_DEVICE_NAME);
+    if (uart1_dev == RT_NULL)
+    {
+        rt_kprintf("Error: Cannot find UART1 device!\n");
+        return -RT_ERROR;
+    }
+
+    
+
+    struct serial_configure config = RT_SERIAL_CONFIG_DEFAULT;
+    config.baud_rate=115200;
+    rt_device_control(uart2_dev, RT_DEVICE_CTRL_CONFIG, &config);
+    
+    /* 初始化信号量 */
+    result = rt_sem_init(&rx_sem, "uart2_rx_sem", 0, RT_IPC_FLAG_FIFO);
+    if (result != RT_EOK)
+    {
+        rt_kprintf("Error: Failed to create semaphore!\n");
+        return result;
+    }
+    
+    /* 以中断接收模式打开UART2 */
+    result = rt_device_open(uart2_dev, RT_DEVICE_FLAG_INT_RX);
+    if (result != RT_EOK)
+    {
+        rt_kprintf("Error: Failed to open UART2 device!\n");
+        rt_sem_detach(&rx_sem);
+        return result;
+    }
+    
+    /* 以轮询发送模式打开UART1 */
+    result = rt_device_open(uart1_dev, RT_DEVICE_FLAG_STREAM);
+    if (result != RT_EOK)
+    {
+        rt_kprintf("Error: Failed to open UART1 device!\n");
+        rt_device_close(uart2_dev);
+        rt_sem_detach(&rx_sem);
+        return result;
+    }
+    
+    /* 设置UART2接收回调函数 */
+    rt_device_set_rx_indicate(uart2_dev, uart2_rx_ind);
+    
+    /* 创建数据转发线程 */
+    thread = rt_thread_create("uart_fwd", 
+                             uart_forward_thread_entry, 
+                             RT_NULL, 
+                             1024, 
+                             20, 
+                             10);
+    if (thread != RT_NULL)
+    {
+        rt_thread_startup(thread);
+        rt_kprintf("UART2 to UART1 forward service started successfully!\n");
+    }
+    else
+    {
+        rt_kprintf("Error: Failed to create forward thread!\n");
+        result = -RT_ERROR;
+    }
+    
+    return result;
+}
+
+/* 导出到MSH命令列表 */
+MSH_CMD_EXPORT(uart_forward_init, Start UART2 to UART1 data forwarding);

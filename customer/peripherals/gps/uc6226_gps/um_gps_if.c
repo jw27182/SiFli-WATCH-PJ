@@ -117,7 +117,7 @@ static int um_gps_gpio_set(int en)
 }
 int um_gps_start(GpsCallbacks *callbacks)
 {
-    LOG_D("enter %s", __FUNCTION__);
+    LOG_I("enter %s", __FUNCTION__);
 
     int ret = 0;
 
@@ -135,7 +135,7 @@ int um_gps_start(GpsCallbacks *callbacks)
 
     //um_gps_set_freq(1000);
 
-    LOG_D("leave %s, %d", __FUNCTION__, ret);
+    LOG_I("leave %s, %d", __FUNCTION__, ret);
 
     return ret;
 }
@@ -154,7 +154,7 @@ int um_gps_stop()
     }
     um_gps_gpio_set(0);
 
-    LOG_D("%s", __FUNCTION__);
+    LOG_I("%s", __FUNCTION__);
 
     return ret;
 }
@@ -186,10 +186,10 @@ int um_gps_set_freq(uint16_t freq)
         sprintf(cmd, "$CFGSAVE\r\n");
         ret = gps_send_cmd(MSG_SAVE_CFG, cmd, strlen(cmd));
         if (ret != 0)
-            LOG_D("Set cmd MSG_SAVE_CFG fail with %d\n", ret);
+            LOG_I("Set cmd MSG_SAVE_CFG fail with %d\n", ret);
     }
     else
-        LOG_D("Set cmd MSG_SET_INTERVAL fail with %d\n", ret);
+        LOG_I("Set cmd MSG_SET_INTERVAL fail with %d\n", ret);
 
     return ret;
 }
@@ -203,7 +203,7 @@ int um_gps_get_freq()
     sprintf(cmd, "$CFGNAV\r\n");
     ret = gps_send_cmd(MSG_SET_INTERVAL, cmd, strlen(cmd));
     if (ret != 0)
-        LOG_D("SET command MSG_SET_INTERVAL fail %d\n", ret);
+        LOG_I("SET command MSG_SET_INTERVAL fail %d\n", ret);
 
     return ret;
 }
@@ -224,10 +224,10 @@ int um_gps_set_nmea_version(uint8_t version)
         sprintf(cmd, "$CFGSAVE\r\n");
         ret = gps_send_cmd(MSG_SAVE_CFG, cmd, strlen(cmd));
         if (ret != 0)
-            LOG_D("Set cmd MSG_SAVE_CFG fail with %d\n", ret);
+            LOG_I("Set cmd MSG_SAVE_CFG fail with %d\n", ret);
     }
     else
-        LOG_D("Set cmd MSG_NMEA_VER fail with %d\n", ret);
+        LOG_I("Set cmd MSG_NMEA_VER fail with %d\n", ret);
 
     return ret;
 }
@@ -258,10 +258,10 @@ int um_gps_set_position_mode(uint32_t mode)
         sprintf(cmd, "$CFGSAVE\r\n");
         ret = gps_send_cmd(MSG_SAVE_CFG, cmd, strlen(cmd));
         if (ret != 0)
-            LOG_D("Set cmd MSG_SAVE_CFG fail with %d\n", ret);
+            LOG_I("Set cmd MSG_SAVE_CFG fail with %d\n", ret);
     }
     else
-        LOG_D("Set cmd MSG_SET_POS_MODE fail with %d\n", ret);
+        LOG_I("Set cmd MSG_SET_POS_MODE fail with %d\n", ret);
 
     return ret;
 }
@@ -300,7 +300,7 @@ int um_gps_delete_aiding_data(uint16_t flags)
     sprintf(cmd + length, "*%02X\r\n", sum);
     ret = gps_send_cmd(MSG_DELETE_AIDING, cmd, strlen(cmd));
     if (ret != 0)
-        LOG_D("Set cmd MSG_DELETE_AIDING fail with %d\n", ret);
+        LOG_I("Set cmd MSG_DELETE_AIDING fail with %d\n", ret);
 
     return ret;
 }
@@ -328,7 +328,7 @@ int um_gps_set_start_mode(uint16_t mode)
     sprintf(cmd + length, "*%02X\r\n", sum);
     ret = gps_send_cmd(MSG_DELETE_AIDING, cmd, strlen(cmd));
     if (ret != 0)
-        LOG_D("Set cmd MSG_DELETE_AIDING fail with %d\n", ret);
+        LOG_I("Set cmd MSG_DELETE_AIDING fail with %d\n", ret);
 
     return ret;
 }
@@ -340,7 +340,7 @@ int um_gps_req_assist(uint8_t type)
     sprintf(cmd, "ASSIST");
     ret = gps_send_cmd(MSG_REQ_ASSIST, cmd, strlen(cmd));
     if (ret != 0)
-        LOG_D("Set cmd MSG_REQ_ASSIST fail with %d\n", ret);
+        LOG_I("Set cmd MSG_REQ_ASSIST fail with %d\n", ret);
 
     return ret;
 }
@@ -352,7 +352,7 @@ int um_gps_fw_info()
     sprintf(cmd, "$PDTINFO\r\n");
     ret = gps_send_cmd(MSG_GET_FWINFO, cmd, strlen(cmd));
     if (ret != 0)
-        LOG_D("Set cmd MSG_GET_FWINFO fail with %d\n", ret);
+        LOG_I("Set cmd MSG_GET_FWINFO fail with %d\n", ret);
 
     return ret;
 }
@@ -382,7 +382,7 @@ int um_gps_set_baud(uint32_t baud)
         gps_hal_set_local_baud(baud);
     }
     else
-        LOG_D("Set cmd MSG_SAVE_CFG fail with %d\n", ret);
+        LOG_I("Set cmd MSG_SAVE_CFG fail with %d\n", ret);
 
     return ret;
 }
@@ -409,14 +409,14 @@ int um_gps_set_nmea_output(uint8_t type, uint8_t flag, uint8_t freq)
 
     if (ret != 0)
     {
-        LOG_D("Set cmd MSG_NMEA_OUTPUT fail with %d\n", ret);
+        LOG_I("Set cmd MSG_NMEA_OUTPUT fail with %d\n", ret);
         return ret;
     }
 
     sprintf(cmd, "$CFGSAVE\r\n");
     ret = gps_send_cmd(MSG_SAVE_CFG, cmd, strlen(cmd));
     if (ret != 0)
-        LOG_D("Set cmd MSG_SAVE_CFG fail with %d\n", ret);
+        LOG_I("Set cmd MSG_SAVE_CFG fail with %d\n", ret);
 
     return ret;
 }
@@ -428,7 +428,7 @@ int um_gps_start_debug()
     sprintf(cmd, "$CFGDEBUG,1,1\r\n");
     ret = gps_send_cmd(MSG_START_DEBUG, cmd, strlen(cmd));
     if (ret != 0)
-        LOG_D("Set cmd MSG_START_DEBUG fail with %d\n", ret);
+        LOG_I("Set cmd MSG_START_DEBUG fail with %d\n", ret);
 
     return ret;
 }
@@ -445,7 +445,7 @@ int um_gps_pps_output(uint8_t flag)
     sprintf(cmd, "$CFGSAVE\r\n");
     ret = gps_send_cmd(MSG_SAVE_CFG, cmd, strlen(cmd));
     if (ret != 0)
-        LOG_D("Set cmd MSG_SAVE_CFG fail with %d\n", ret);
+        LOG_I("Set cmd MSG_SAVE_CFG fail with %d\n", ret);
 
     return ret;
 }
@@ -454,7 +454,7 @@ static void gps_loc_cb(GpsLocation *param)
 {
     if (param != NULL)
     {
-        LOG_D("loc: longit = %.6f, latitude=%.6f, altitude=%f, speed = %f\n", param->longitude, param->latitude, param->altitude, param->speed);
+        LOG_I("loc: longit = %.6f, latitude=%.6f, altitude=%f, speed = %f\n", param->longitude, param->latitude, param->altitude, param->speed);
         ggps_info.longitude = param->longitude;
         ggps_info.latitude = param->latitude;
         ggps_info.speed = param->speed;

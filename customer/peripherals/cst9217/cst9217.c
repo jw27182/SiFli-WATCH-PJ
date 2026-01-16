@@ -133,12 +133,12 @@ static rt_err_t read_point(touch_msg_t p_msg)
         p_msg->x = ((p[1] << 4) | (p[3] >> 4));
         p_msg->y = ((p[2] << 4) | (p[3] & 0x0F));
         p_msg->event = TOUCH_EVENT_DOWN;
-        LOG_I("Point: X=%d, Y=%d", p_msg->x, p_msg->y);
+        // LOG_I("Point: X=%d, Y=%d", p_msg->x, p_msg->y);
     }
     else
     {
         p_msg->event = TOUCH_EVENT_UP;
-        LOG_I("Touch released");
+        // LOG_I("Touch released");
     }
 
     return RT_EEMPTY;

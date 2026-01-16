@@ -47,5 +47,6 @@
     "py_app5": "PythonApp5",
     "rotation3d":"Rotation 3D",
     "lvgl_demos":"LVGL demos",
-    "lckfb": "LCKFB"
+    "humiture": "humiture",
+    "gyroscope": "gyroscope"
 }

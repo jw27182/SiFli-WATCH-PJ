@@ -194,6 +194,10 @@ static void BSP_PIN_Common(void)
     HAL_PIN_Set(PAD_PA18, USART1_RXD, PIN_PULLUP, 1);
     HAL_PIN_Set(PAD_PA19, USART1_TXD, PIN_PULLUP, 1);
 
+    // UART2 - gnss
+    HAL_PIN_Set(PAD_PA27, USART2_RXD, PIN_PULLUP, 1);
+    HAL_PIN_Set(PAD_PA28, USART2_TXD, PIN_PULLUP, 1);
+
     // Key1 - Power key
     /* Keep default pull-down unchanged. Uart download driver would use this function,
      * if pulldown is disabled, download driver would not work on the board without external pull-down
@@ -238,7 +242,8 @@ static void BSP_PIN_Common(void)
     HAL_PIN_Set(PAD_PA32, GPIO_A32, PIN_PULLDOWN, 1);   // RGB LED
     HAL_PIN_Set(PAD_PA38, GPIO_A38, PIN_PULLDOWN, 1);
     HAL_PIN_Set(PAD_PA44, GPIO_A44, PIN_NOPULL, 1);   // VBUS_DET
-    HAL_PIN_Set(PAD_PA30, GPIO_A30, PIN_PULLDOWN, 1);   // Sensor Power
+    HAL_PIN_Set(PAD_PA30, GPIO_A30, PIN_PULLDOWN, 1);  // Sensor Power
+    HAL_PIN_Set(PAD_PA29, GPIO_A29, PIN_PULLDOWN, 1);   // GNSS Power
 #endif
 
 }
