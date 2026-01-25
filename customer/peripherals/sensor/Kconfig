@@ -237,6 +237,15 @@ menuconfig SENSOR_USING_BAROMETER
                 string "Sensor BMP280 I2C"
                 default "i2c4"    
             endif
+        menuconfig SENSOR_USING_SPL06
+            bool "SPL06"
+            select RT_USING_SENSOR
+            default n
+            if SENSOR_USING_SPL06
+                config SPL06_I2C_BUS
+                string "Sensor SPL06 I2C"
+                default "i2c3"    
+            endif
     endif    
 
 menuconfig SENSOR_USING_HUMITURE

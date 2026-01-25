@@ -16,3 +16,5 @@ Kconfig.tmp
 .cache
 compile_commands.json
 app/watch/project/build_sf32lb52-watch_hcpu
+app/compass
+app/watch_exp
