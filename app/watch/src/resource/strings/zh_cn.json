@@ -49,5 +49,7 @@
     "lvgl_demos":"LVGL示例DEMO",
     "lckfb": "立创开发板",
     "humiture": "温湿度",
-    "gyroscope": "陀螺仪"
+    "gyroscope": "陀螺仪",
+    "elevation": "海拔高度",
+    "brightness": "亮度"
 }

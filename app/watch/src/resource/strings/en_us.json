@@ -48,5 +48,7 @@
     "rotation3d":"Rotation 3D",
     "lvgl_demos":"LVGL demos",
     "humiture": "humiture",
-    "gyroscope": "gyroscope"
+    "gyroscope": "gyroscope",
+    "elevation": "elevation",
+    "brightness": "brightness"
 }

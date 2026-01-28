@@ -161,13 +161,19 @@ int rt_hw_ltr303_init(const char *name, struct rt_sensor_config *cfg)
     }
 }
 
-#endif // RT_USING_SENSOR
-/************************ (C) COPYRIGHT Sifli Technology *******END OF FILE****/
-static void ltr303_test(int argc, char **argv) {
+static int ltr303_init(void)
+{
     struct rt_sensor_config cfg = {
         .intf.dev_name = "i2c3",
     };
-    rt_hw_ltr303_init("ltr303", &cfg);
+    return rt_hw_ltr303_init("ltr303", &cfg);
+}
+
+INIT_DEVICE_EXPORT(ltr303_init);
+
+#endif // RT_USING_SENSOR
+/************************ (C) COPYRIGHT Sifli Technology *******END OF FILE****/
+static void ltr303_test(int argc, char **argv) {
     rt_device_t sensor_dev = rt_device_find("li_ltr303");
     if (sensor_dev == RT_NULL) {
         rt_kprintf("find ltr303 sensor device failed!\n");
