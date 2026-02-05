@@ -287,11 +287,27 @@ __exit:
 #endif /* RT_USING_SENSOR */
 
 /************************ (C) COPYRIGHT Sifli Technology *******END OF FILE****/
-static int spl06_init(void)
-{
-    struct rt_sensor_config cfg = {0};
+static int spl06_init(void) {
+    int retry_count = 0;
+    int max_retry = 4;
+    rt_err_t ret = RT_EOK;
+    struct rt_sensor_config cfg  = {0};
     cfg.irq_pin.pin = RT_PIN_NONE;
-    return rt_hw_spl06_init("spl06", &cfg);
+
+    while (retry_count < max_retry) {
+        ret = rt_hw_spl06_init("spl06", &cfg);
+        if (ret == RT_EOK) {
+            break;
+        }
+        LOG_W("spl06_init failed after %d/%d retries, err code: %d", retry_count, max_retry, ret);
+        retry_count++;
+        rt_thread_mdelay(300); 
+    }
+    if (retry_count == max_retry) {
+        LOG_E("spl06_init failed after %d retries", max_retry);
+        return -RT_ERROR;
+    }
+    return ret;
 }
 
 INIT_DEVICE_EXPORT(spl06_init);
@@ -304,9 +320,15 @@ static void spl06_test(int argc, char **argv) {
         return;
     } else {
         rt_err_t ret = rt_device_open(baro_sensor_dev, RT_DEVICE_FLAG_RDONLY);
-        if (ret != RT_EOK) rt_kprintf("open baro_sensor_dev failed! err: %d\n", ret);
+        if (ret != RT_EOK) {
+            rt_kprintf("open baro_sensor_dev failed! err: %d\n", ret);
+            return;
+        }
         ret = rt_device_open(temp_sensor_dev, RT_DEVICE_FLAG_RDONLY);
-        if (ret != RT_EOK) rt_kprintf("open temp_sensor_dev failed! err: %d\n", ret);
+        if (ret != RT_EOK) {
+            rt_kprintf("open temp_sensor_dev failed! err: %d\n", ret);
+            return;
+        }
         struct rt_sensor_data sensor_data;
         for (int i = 0; i <= atoi(argv[1]); i++) {
             rt_device_read(baro_sensor_dev, 0, &sensor_data, 1);
@@ -317,6 +339,7 @@ static void spl06_test(int argc, char **argv) {
                        atoi(argv[1]));
         }
         rt_device_close(baro_sensor_dev);
+        rt_device_close(temp_sensor_dev);
     }
 }
 

@@ -59,7 +59,7 @@ extern "C" {
 /*
  *  SPL06 I2C address
  */
-#define SPL06_ADDR      0x77
+#define SPL06_ADDR      0x76
 
 /*
  *  SPL06 chip id
