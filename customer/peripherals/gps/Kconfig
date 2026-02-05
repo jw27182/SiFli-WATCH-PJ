@@ -4,22 +4,25 @@ menuconfig SENSOR_USING_GPS
     bool "Enable GPS Sensor"
     default n
     if SENSOR_USING_GPS
-        menuconfig GPS_USING_UC6226
-            bool "Enable GPS module UC6226"
+        menuconfig GPS_USING_ATGM336H
+            bool "Enable GPS module ATGM336H (NMEA-only)"
             select RT_USING_SENSOR
             default n
-            if GPS_USING_UC6226
+            if GPS_USING_ATGM336H
                 config GPS_UART_NAME
-                string "GPS Uart"
-                default "uart3"
+                    string "GPS Uart"
+                    default "uart2"
 
-                config GPS_GPIO_BIT
-                int "GPS RESET PIN"
-                default 69
+                config GPS_UART_BAUD
+                    int "GPS Uart Baud"
+                    default 115200
 
                 config GPS_POWER_BIT
-                int "GPS POWER BIT"
-                default 72
+                    int "GPS Power Bit"
+                    default 29
+                config GPS_OUTPUT_FREQ
+                    int "GPS Output Freq (Hz)"
+                    default 5
             endif
     endif
 

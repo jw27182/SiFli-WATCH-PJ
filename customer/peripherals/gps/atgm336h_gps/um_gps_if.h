@@ -1,45 +1,48 @@
 /**
-  ******************************************************************************
-  * @file   um_gps_if.h
-  * @author Sifli software development team
-  ******************************************************************************
-*/
+ ******************************************************************************
+ * @file   um_gps_if.h
+ * @author Sifli software development team
+ ******************************************************************************
+ */
 /**
  * @attention
  * Copyright (c) 2019 - 2022,  Sifli Technology
  *
  * All rights reserved.
  *
- * Redistribution and use in source and binary forms, with or without modification,
- * are permitted provided that the following conditions are met:
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
  *
- * 1. Redistributions of source code must retain the above copyright notice, this
- *    list of conditions and the following disclaimer.
+ * 1. Redistributions of source code must retain the above copyright notice,
+ * this list of conditions and the following disclaimer.
  *
- * 2. Redistributions in binary form, except as embedded into a Sifli integrated circuit
- *    in a product or a software update for such product, must reproduce the above
- *    copyright notice, this list of conditions and the following disclaimer in the
- *    documentation and/or other materials provided with the distribution.
+ * 2. Redistributions in binary form, except as embedded into a Sifli integrated
+ * circuit in a product or a software update for such product, must reproduce
+ * the above copyright notice, this list of conditions and the following
+ * disclaimer in the documentation and/or other materials provided with the
+ * distribution.
  *
- * 3. Neither the name of Sifli nor the names of its contributors may be used to endorse
- *    or promote products derived from this software without specific prior written permission.
+ * 3. Neither the name of Sifli nor the names of its contributors may be used to
+ * endorse or promote products derived from this software without specific prior
+ * written permission.
  *
  * 4. This software, with or without modification, must only be used with a
  *    Sifli integrated circuit.
  *
- * 5. Any software provided in binary form under this license must not be reverse
- *    engineered, decompiled, modified and/or disassembled.
+ * 5. Any software provided in binary form under this license must not be
+ * reverse engineered, decompiled, modified and/or disassembled.
  *
  * THIS SOFTWARE IS PROVIDED BY SIFLI TECHNOLOGY "AS IS" AND ANY EXPRESS
  * OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
  * OF MERCHANTABILITY, NONINFRINGEMENT, AND FITNESS FOR A PARTICULAR PURPOSE ARE
  * DISCLAIMED. IN NO EVENT SHALL SIFLI TECHNOLOGY OR CONTRIBUTORS BE
  * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
- * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE
- * GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
- * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
- * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT
- * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
  *
  */
 
@@ -48,12 +51,9 @@
 
 #include "gps_types.h"
 
+#define GPS_CMD_MAXLEN (64)
 
-#define GPS_CMD_MAXLEN      (64)
-
-
-enum
-{
+enum {
     MSG_DELETE_AIDING = 1,
     MSG_SET_INTERVAL,
     MSG_SET_POS_MODE,
@@ -69,35 +69,32 @@ enum
     MSG_OUTPUT_PPS,
 };
 
-enum
-{
+enum {
     START_MODE_HOT,
     START_MODE_COLD,
     START_MODE_WARM,
 };
 
-enum
-{
-    GPS_DELETE_EPHEMERIS = 1, // 0x0001
-    GPS_DELETE_ALMANAC = 2, // 0x0002
-    GPS_DELETE_POSITION = 4, // 0x0004
-    GPS_DELETE_TIME = 8, // 0x0008
-    GPS_DELETE_IONO = 16, // 0x0010
-    GPS_DELETE_ALL = 65535, // 0xFFFF
+enum {
+    GPS_DELETE_EPHEMERIS = 1,  // 0x0001
+    GPS_DELETE_ALMANAC = 2,    // 0x0002
+    GPS_DELETE_POSITION = 4,   // 0x0004
+    GPS_DELETE_TIME = 8,       // 0x0008
+    GPS_DELETE_IONO = 16,      // 0x0010
+    GPS_DELETE_ALL = 65535,    // 0xFFFF
 };
 
-enum
-{
-    SATELLITE_SYSTEM_GPS_L1  = 0x00000001,
-    SATELLITE_SYSTEM_GPS_L5  = 0x00000004,
-    SATELLITE_SYSTEM_BDS_B1  = 0x00000010,
-    SATELLITE_SYSTEM_BDS_B3  = 0x00000040,
-    SATELLITE_SYSTEM_GLN_L1  = 0x00000100,
-    SATELLITE_SYSTEM_GLN_L2  = 0x00000200,
-    SATELLITE_SYSTEM_GAL_E1  = 0x00001000,
+enum {
+    SATELLITE_SYSTEM_GPS_L1 = 0x00000001,
+    SATELLITE_SYSTEM_GPS_L5 = 0x00000004,
+    SATELLITE_SYSTEM_BDS_B1 = 0x00000010,
+    SATELLITE_SYSTEM_BDS_B3 = 0x00000040,
+    SATELLITE_SYSTEM_GLN_L1 = 0x00000100,
+    SATELLITE_SYSTEM_GLN_L2 = 0x00000200,
+    SATELLITE_SYSTEM_GAL_E1 = 0x00001000,
     SATELLITE_SYSTEM_GAL_E5a = 0x00002000,
     SATELLITE_SYSTEM_GAL_E5b = 0x00004000,
-    SATELLITE_SYSTEM_SBAS    = 0x00100000,
+    SATELLITE_SYSTEM_SBAS = 0x00100000,
 };
 
 /*
@@ -121,10 +118,9 @@ int Create_GPS_Task();
  *
  * Param:
  *     callbacks: pointer to struct GpsCallbacks,
- *                which include callback functions who are interested in GPS location, Satellite Infomation and status
- * return value
- *    0  -- succeed
- *    -1 -- fail
+ *                which include callback functions who are interested in GPS
+ * location, Satellite Infomation and status return value 0  -- succeed -1 --
+ * fail
  */
 int um_gps_start(GpsCallbacks *callbacks);
 
@@ -142,7 +138,6 @@ int um_gps_start(GpsCallbacks *callbacks);
  */
 int um_gps_stop();
 
-
 /*
  * um_gps_set_freq
  *
@@ -158,28 +153,6 @@ int um_gps_stop();
  *    -1 -- fail
  */
 int um_gps_set_freq(uint16_t freq);
-
-/*
- * um_gps_delete_aiding_data
- *
- * delete different aiding data,such as ephemeris, time, position, almanac, etc.
- * only can be called after gps engine was started
- *
- * Param:
- *      flags: U32
- *             can choose from below:
- *                GPS_DELETE_EPHEMERIS = 1, // 0x0001
- *                GPS_DELETE_ALMANAC = 2, // 0x0002
- *                GPS_DELETE_POSITION = 4, // 0x0004
- *                GPS_DELETE_TIME = 8, // 0x0008
- *                GPS_DELETE_IONO = 16, // 0x0010
- *                GPS_DELETE_ALL = 65535, // 0xFFFF
- *
- * return value
- *    0  -- succeed
- *    -1 -- fail
- */
-int um_gps_delete_aiding_data(uint16_t flags);
 
 /*
  * um_gps_set_position_mode
@@ -318,40 +291,6 @@ int um_gps_set_nmea_output(uint8_t type, uint8_t flag, uint8_t freq);
 int um_gps_set_nmea_version(uint8_t version);
 
 /*
- * um_gps_pps_output
- *
- * enable GPS chip output date, time and hardware timing pulse
- *
- * Param:
- *     flag: U8
- *           the meaning of each bit as follow:
- *           bit0: 0 -- close time pulse output; 1 -- open time pulse output
- *           bit1: 0 -- edge rise align with each second; 1 -- edge down align with each second
-             bit2: 0 -- ouput time pulse only when time was valid;  1 -- always ouput time pulse infomation
- *           bit3: 0 -- do not print out TIMTP message; 1 -- print out TIMTP message;
- *
- * return value
- *    0  -- succeed
- *    -1 -- fail
- */
-int um_gps_pps_output(uint8_t flag);
-
-/*
- * um_gps_start_debug
- *
- * start debug mode, Firmware will output more debug infomation
- * suggest to set the baud rate above 115200 bps
- *
- * Param:
- *     none
- *
- * return value
- *    0  -- succeed
- *    -1 -- fail
- */
-int um_gps_start_debug();
-
-/*
  * um_gps_init
  *
  * start gps module, wait location callback
@@ -366,7 +305,7 @@ int um_gps_start_debug();
 int um_gps_init(void);
 
 /*
- * um_gps_get_location
+ * um_gps_get_data
  *
  * Get north latitude and east longititude degree and altitude
  *
@@ -376,13 +315,15 @@ int um_gps_init(void);
  *     longiti:double
  *
  *     alti: double
+ *     
+ *     detail: void*
  *
  *
  * return value
  *    0  -- succeed
  *    -1 -- fail
  */
-int um_gps_get_location(double *lati, double *longiti, double *alti);
+int um_gps_get_data(double *lati, double *longiti, double *alti, void* detail);
 
 /*
  * um_gps_open
@@ -412,19 +353,5 @@ int um_gps_open(void);
  */
 int um_gps_close(void);
 
-/*
- * um_gps_self_check
- *
- * check hardware connection
- *
- * Param:
- *     none
- *
- * return value
- *    0  -- succeed
- *    other -- fail
- */
-int um_gps_self_check(void);
-
-#endif // __GPS_HOST_IF_H__
+#endif  // __GPS_HOST_IF_H__
 /************************ (C) COPYRIGHT Sifli Technology *******END OF FILE****/
