@@ -26,5 +26,7 @@ src.extend(app_objs)
 # #Add applications utils
 src.extend(SConscript(os.path.join(cwd, 'app_utils/SConscript'), variant_dir="app_utils", duplicate=0))
 
+src.extend(SConscript(os.path.join(cwd, 'device_manager/SConscript'), variant_dir="device_manager", duplicate=0))
+
 group = DefineGroup('app', src, depend = ['PKG_USING_LITTLEVGL2RTT'], CPPPATH = inc)
 Return('group')

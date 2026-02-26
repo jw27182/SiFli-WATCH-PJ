@@ -19,6 +19,7 @@
 #include "custom_trans_anim.h"
 #include "log.h"
 #include "lv_ext_resource_manager.h"
+#include "vibrator_manager.h"
 
 LV_IMG_DECLARE(img_alarm_clock);
 LV_IMG_DECLARE(img_battery);
@@ -853,6 +854,7 @@ static void icon_event_callback(lv_event_t *e) {
     } else if ((LV_EVENT_SHORT_CLICKED == event) &&
                (!app_mainmenu_ctx.scroll_actived)) {
         rt_kprintf("app mainmenu icon clickd\n");
+        vibrator_send(200,75);
 
         lv_obj_add_flag(app_mainmenu_ctx.pg_obj, LV_OBJ_FLAG_SCROLLABLE);
         lv_obj_scroll_to_view(obj, LV_ANIM_ON);
@@ -1073,24 +1075,24 @@ static void app_mainmenu_read_app_icons(lv_obj_t *page) {
     {
         uint16_t i;
         const void *dummy_icons[] = {
-            LV_EXT_IMG_GET(img_alarm_clock),
-            LV_EXT_IMG_GET(img_battery),
-            LV_EXT_IMG_GET(img_blood_oxygen),
-            LV_EXT_IMG_GET(img_calculator),
-            LV_EXT_IMG_GET(img_clock),
-            LV_EXT_IMG_GET(img_compass),
-            LV_EXT_IMG_GET(img_data),
-            LV_EXT_IMG_GET(img_elevation),
-            LV_EXT_IMG_GET(img_game),
-            LV_EXT_IMG_GET(img_gradienter_line),
-            LV_EXT_IMG_GET(img_heart_rate),
-            LV_EXT_IMG_GET(img_humiture),
-            LV_EXT_IMG_GET(img_light_intensity),
-            LV_EXT_IMG_GET(img_location),
-            LV_EXT_IMG_GET(img_music),
-            LV_EXT_IMG_GET(img_setting),
-            LV_EXT_IMG_GET(img_sound_recorder),
-            LV_EXT_IMG_GET(img_step),
+            // LV_EXT_IMG_GET(img_alarm_clock),
+            // LV_EXT_IMG_GET(img_battery),
+            // LV_EXT_IMG_GET(img_blood_oxygen),
+            // LV_EXT_IMG_GET(img_calculator),
+            // LV_EXT_IMG_GET(img_clock),
+            // LV_EXT_IMG_GET(img_compass),
+            // LV_EXT_IMG_GET(img_data),
+            // LV_EXT_IMG_GET(img_elevation),
+            // LV_EXT_IMG_GET(img_game),
+            // LV_EXT_IMG_GET(img_gradienter_line),
+            // LV_EXT_IMG_GET(img_heart_rate),
+            // LV_EXT_IMG_GET(img_humiture),
+            // LV_EXT_IMG_GET(img_light_intensity),
+            // LV_EXT_IMG_GET(img_location),
+            // LV_EXT_IMG_GET(img_music),
+            // LV_EXT_IMG_GET(img_setting),
+            // LV_EXT_IMG_GET(img_sound_recorder),
+            // LV_EXT_IMG_GET(img_step),
         };
 
         for (i = 0; i < sizeof(dummy_icons) / sizeof(dummy_icons[0]);
@@ -1239,6 +1241,12 @@ static void app_mainmenu_icons_transform(bool force_refresh) {
 
     // rt_kprintf("app_mainmenu_icons_transform cost %d ms \n",rt_tick_get() -
     // start);
+    static lv_obj_t* last_center_icon = NULL; // 静态变量，记录上一次居中的图标
+    if (app_mainmenu_ctx.cicon != last_center_icon && app_mainmenu_ctx.cicon != NULL) {
+        // 中心图标发生了变化，触发一次短震动
+        vibrator_send(50, 75); // 参数可根据需要调整，例如震动50ms
+        last_center_icon = app_mainmenu_ctx.cicon; // 更新记录
+    }
 }
 /*
 static void app_mainmenu_drag_springback(void)
