@@ -58,7 +58,7 @@
 #include "um_gps_hal.h"
 #include "um_gps_nmea.h"
 
-//#define DRV_DEBUG
+// #define DRV_DEBUG
 #define LOG_TAG "drv.gps"
 #include <drv_log.h>
 
@@ -329,8 +329,9 @@ int um_gps_set_nmea_output(uint8_t type, uint8_t flag, uint8_t freq) {
 
 static void gps_loc_cb(GpsLocation *param) {
     if (param != NULL) {
-        LOG_I("loc: longit = %.6f, latitude=%.6f, altitude=%f, speed = %f\n",
-              param->longitude, param->latitude, param->altitude, param->speed);
+        // LOG_I("loc: longit = %.6f, latitude=%.6f, altitude=%f, speed = %f\n",
+        //       param->longitude, param->latitude, param->altitude,
+        //       param->speed);
         memcpy(&g_location_data, param, sizeof(GpsLocation));
         g_gps_data.location_data = g_location_data;
     }
@@ -382,13 +383,20 @@ int um_gps_get_data(double *lati, double *longiti, double *alti, void *detail) {
     // if(g_location_data.size == 0)
     //    return 1;
 
-    *lati = g_location_data.latitude;
-    *longiti = g_location_data.longitude;
-    *alti = g_location_data.altitude;
+    if (lati) *lati = g_location_data.latitude;
+    if (longiti) *longiti = g_location_data.longitude;
+    if(alti) *alti = g_location_data.altitude;
     if (detail) memcpy(detail, &g_gps_data, sizeof(GpsData));
 
     return 0;
 }
+
+static int gps_init(void) {
+    um_gps_init();
+    return um_gps_open();
+}
+
+INIT_COMPONENT_EXPORT(gps_init);
 
 #define GPS_CMD_TEST
 #ifdef GPS_CMD_TEST
@@ -424,20 +432,16 @@ int cmd_gps(int argc, char *argv[]) {
 static void gps_thread_entry(void *param) {
     double lat, lon, alt;
     GpsData gps_data;
-    um_gps_init();
-    int res = um_gps_open();
-    LOG_I("GPS open %d\n", res);
     while (1) {
         if (um_gps_get_data(&lat, &lon, &alt, &gps_data) == 0) {
             LOG_I(
                 "=============================================================="
                 "===================");
-            LOG_I(
-                "Get location North %.6f, East %.6f, high %f, accuracy %f, "
-                "speed %f, bearing %f, flags 0x%x",
-                lat, lon, alt, gps_data.location_data.accuracy,
-                gps_data.location_data.speed, gps_data.location_data.bearing,
-                gps_data.location_data.flags);
+            LOG_I("Get location North %.6f, East %.6f, high %f, accuracy %f",
+                  lat, lon, alt, gps_data.location_data.accuracy);
+            LOG_I("speed %f, bearing %f, flags 0x%x",
+                  gps_data.location_data.speed, gps_data.location_data.bearing,
+                  gps_data.location_data.flags);
 
             LOG_I("Time: %04d-%02d-%02d %02d:%02d:%02d",
                   gps_data.location_data.timestamp.tm_year,
