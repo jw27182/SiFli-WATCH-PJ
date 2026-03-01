@@ -18,3 +18,9 @@ compile_commands.json
 app/watch/project/build_sf32lb52-watch_hcpu
 app/compass
 app/watch_exp
+.vscode/settings.json
+.gitignore
+.clangd
+tools/SifliUsartServer/SifliUsartServer.ini
+app/watch/src/gui_apps/eez/*.c
+app/watch/src/gui_apps/eez/*.h
