@@ -98,9 +98,9 @@ typedef enum
     FONT_NORMAL     = 20,
     FONT_SUBTITLE   = 24,
     FONT_TITLE      = 28,
-    FONT_BIGL       = 36,
-    FONT_HUGE       = 56,
-    FONT_SUPER      = 72,
+    FONT_BIGL       = 30,
+    FONT_HUGE       = 42,
+    FONT_SUPER      = 74,
 #else
     FONT_SMALL      = 12,
     FONT_NORMAL     = 16,
