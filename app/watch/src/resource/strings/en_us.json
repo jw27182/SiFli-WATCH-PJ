@@ -50,5 +50,6 @@
     "humiture": "humiture",
     "gyroscope": "gyroscope",
     "elevation": "elevation",
-    "brightness": "brightness"
+    "brightness": "brightness",
+    "location": "location"
 }

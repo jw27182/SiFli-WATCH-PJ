@@ -51,5 +51,6 @@
     "humiture": "温湿度",
     "gyroscope": "陀螺仪",
     "elevation": "海拔高度",
-    "brightness": "亮度"
+    "brightness": "亮度",
+    "location": "定位"
 }

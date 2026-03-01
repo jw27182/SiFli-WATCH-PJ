@@ -2,7 +2,7 @@
   "navigation": {
     "selectedUserPageObject": "[sf32_watch.eez-project]:/userPages/0",
     "selectedFontObject": "[sf32_watch.eez-project]:/fonts/1",
-    "selectedBitmapObject": "[sf32_watch.eez-project]:/bitmaps/5",
+    "selectedBitmapObject": "[sf32_watch.eez-project]:/bitmaps/1",
     "subnavigationSelectedItems": {}
   },
   "layoutModel": {
@@ -23,7 +23,7 @@
           },
           {
             "type": "border",
-            "selected": 1,
+            "selected": 0,
             "size": 240,
             "location": "right",
             "children": [
@@ -71,8 +71,8 @@
           },
           {
             "type": "border",
-            "selected": 2,
-            "size": 0.09375,
+            "selected": 1,
+            "size": 0,
             "location": "bottom",
             "children": [
               {
@@ -119,7 +119,7 @@
             {
               "type": "row",
               "id": "#3c53f9c6-611f-4eb7-8b0f-1a676935fe97",
-              "weight": 15.118157105702238,
+              "weight": 23.943795563315923,
               "children": [
                 {
                   "type": "tabset",
@@ -190,10 +190,21 @@
             {
               "type": "tabset",
               "id": "EDITORS",
-              "weight": 42.01375495292532,
+              "weight": 39.88532260941837,
               "enableDeleteWhenEmpty": false,
               "enableClose": false,
               "children": [
+                {
+                  "type": "tab",
+                  "id": "#0e69f098-b42a-4fd7-bb84-31eec166a2bb",
+                  "name": "location",
+                  "component": "editor",
+                  "config": {
+                    "objectPath": "[sf32_watch.eez-project]:/userPages/1",
+                    "permanent": false
+                  },
+                  "icon": "svg:page"
+                },
                 {
                   "type": "tab",
                   "id": "#c9aaffcd-30a6-42b1-9e41-7355021f9617",
@@ -223,12 +234,12 @@
             {
               "type": "row",
               "id": "#b9bd0b2d-de81-4dcd-9d79-4716492d6738",
-              "weight": 42.868087941372416,
+              "weight": 36.17088182726571,
               "children": [
                 {
                   "type": "tabset",
                   "id": "#9afccfd5-e5e1-4373-b1bd-5d07443ebce9",
-                  "weight": 1.77491961414791,
+                  "weight": 2.3680851063829786,
                   "children": [
                     {
                       "type": "tab",
@@ -243,7 +254,7 @@
                 {
                   "type": "tabset",
                   "id": "#86f71f99-4732-42ce-81cb-4649a43caf40",
-                  "weight": 1.22508038585209,
+                  "weight": 0.6319148936170212,
                   "children": [
                     {
                       "type": "tab",
@@ -1072,8 +1083,8 @@
       },
       "transform": {
         "translate": {
-          "x": -262.2993731940457,
-          "y": -376.31546572681043
+          "x": -327.9818181818183,
+          "y": -401.45359639406786
         },
         "scale": 1.5
       },
@@ -1086,8 +1097,35 @@
       "selectionFront": {},
       "selectionBack": {
         "0": {
-          "0": {}
+          "4": {},
+          "6": {},
+          "7": {},
+          "8": {}
         }
+      }
+    },
+    "[sf32_watch.eez-project]:/userPages/1[flow-state]": {
+      "selectionFront": {},
+      "selectionBack": {
+        "0": {
+          "0": {},
+          "11": {
+            "$selected": true
+          }
+        }
+      },
+      "transform": {
+        "translate": {
+          "x": -262.2993731940457,
+          "y": -266.77095833448504
+        },
+        "scale": 1.5
+      },
+      "timeline": {
+        "isEditorActive": false,
+        "position": 0,
+        "secondToPx": 200,
+        "scrollLeft": 0
       }
     }
   },
@@ -1103,10 +1141,9 @@
   "showComponentDescriptions": true,
   "logsPanelFilter": "all",
   "selectedStylePropertyName": "",
-  "lvglPart": "KNOB",
+  "lvglPart": "MAIN",
   "lvglState": "DEFAULT",
   "lvglExpandedPropertiesGroup": [
-    "BACKGROUND",
     "MISCELLANEOUS",
     "ARC",
     "LINE",
@@ -1114,15 +1151,16 @@
     "SHADOW",
     "OUTLINE",
     "BORDER",
-    "MARGIN",
     "PADDING",
     "LAYOUT",
     "POSITION AND SIZE",
-    "TEXT"
+    "TEXT",
+    "BACKGROUND",
+    "MARGIN"
   ],
   "showInactiveFlowsInDebugger": true,
   "globalFlowZoom": true,
   "flowZoom": 1.5,
   "implementationLanguage": "C",
-  "openDialogDefaultPath": "D:\\大学\\毕设\\icon\\img_satellite_icon.png"
+  "openDialogDefaultPath": "\\\\wsl.localhost\\Ubuntu-24.04\\home\\jw27182\\workspace\\sf32Watch\\SiFli-WATCH-PJ\\app\\watch\\src\\gui_apps\\eez"
 }

@@ -15,7 +15,6 @@
     "ui_image_img_battery_icon.c",
     "ui_image_img_corona_minute.c",
     "ui_image_img_corona_second.c",
-    "ui_image_img_corona_second_230x230.c",
     "ui_image_img_minutes_mask.c",
     "ui_image_img_satellite_icon.c",
     "vars.h"
